@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Utils
+Bundle-SymbolicName: com.example.p2.simpleupdate.utils;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: EXAMPLE
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.equinox.p2.operations;bundle-version="2.0.0",
+ org.eclipse.equinox.p2.core;bundle-version="2.0.0",
+ org.eclipse.equinox.p2.ui;bundle-version="2.0.0",
+ org.eclipse.equinox.p2.metadata;bundle-version="2.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: com.example.p2.simpleupdate.utils
+Bundle-Activator: com.example.p2.simpleupdate.utils.plugin.Activator
