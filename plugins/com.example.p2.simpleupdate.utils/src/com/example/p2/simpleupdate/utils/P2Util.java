@@ -32,6 +32,7 @@ public class P2Util {
 		if (agent == null) {
 			LogHelper.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					"No provisioning agent found.  This application is not set up for updates."));
+			return;
 		}
 
 		// TODO: progress monitor dialog broke update (maybe because of the
@@ -72,15 +73,6 @@ public class P2Util {
 			// updates, etc.
 			// In this example, we simply update as suggested by the operation.
 			ProvisioningJob job = operation.getProvisioningJob(null);
-			if (job == null) {
-				// this happens if application not provisioned by p2
-				// TODO: check if p2 is available beforehand (the way that the
-				// UI uses is to see if you can get a provisioning agent,
-				// profile registry, and then the SELF profile...look at the
-				// code in org.eclipse.p2.ui.sdk.PreloadingRepositoryHandler)
-				return new Status(IStatus.OK, Activator.PLUGIN_ID, UpdateOperation.STATUS_NOTHING_TO_UPDATE,
-						"No ProvisioningJob could not be obtained", null);
-			}
 			status = job.runModal(sub.newChild(100));
 			if (status.getSeverity() == IStatus.CANCEL)
 				throw new OperationCanceledException();
