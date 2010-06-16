@@ -20,8 +20,8 @@ import org.osgi.framework.ServiceReference;
 import com.example.p2.simpleupdate.utils.plugin.Activator;
 
 /**
- * See
- * http://wiki.eclipse.org/Equinox/p2/Adding_Self-Update_to_an_RCP_Application
+ * @see http://wiki.eclipse.org/Equinox/p2/Adding_Self-Update_to_an_RCP_Application
+ * @see http://bugs.eclipse.org/281226
  */
 public class P2Util {
 
