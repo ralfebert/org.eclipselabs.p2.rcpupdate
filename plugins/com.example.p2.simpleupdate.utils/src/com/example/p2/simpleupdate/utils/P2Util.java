@@ -4,12 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.equinox.internal.p2.core.helpers.LogHelper;
-import org.eclipse.equinox.internal.p2.core.helpers.ServiceHelper;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.operations.ProvisioningJob;
 import org.eclipse.equinox.p2.operations.ProvisioningSession;
@@ -17,6 +14,8 @@ import org.eclipse.equinox.p2.operations.UpdateOperation;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.PlatformUI;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 import com.example.p2.simpleupdate.utils.plugin.Activator;
 
@@ -27,29 +26,47 @@ import com.example.p2.simpleupdate.utils.plugin.Activator;
 public class P2Util {
 
 	public static void checkForUpdates() {
-		final IProvisioningAgent agent = (IProvisioningAgent) ServiceHelper.getService(Activator.getDefault()
-				.getBundle().getBundleContext(), IProvisioningAgent.SERVICE_NAME);
-		if (agent == null) {
-			LogHelper.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+		try {
+			ProgressMonitorDialog progressDialog = new ProgressMonitorDialog(null);
+			progressDialog.run(true, true, new IRunnableWithProgress() {
+
+				@Override
+				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+					doCheckForUpdates(monitor);
+				}
+
+			});
+		} catch (InvocationTargetException e) {
+			Activator.log(e);
+		} catch (InterruptedException e) {
+			Activator.log(e);
+		}
+
+	}
+
+	private static void doCheckForUpdates(IProgressMonitor monitor) {
+		BundleContext bundleContext = Activator.getDefault().getBundle().getBundleContext();
+		ServiceReference reference = bundleContext.getServiceReference(IProvisioningAgent.SERVICE_NAME);
+		if (reference == null) {
+			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					"No provisioning agent found.  This application is not set up for updates."));
 			return;
 		}
 
-		// TODO: progress monitor dialog broke update (maybe because of the
-		// unsigned bundle confirmation dialog?), using NullProgressMonitor
-		// for now
-		IStatus updateStatus = P2Util.checkForUpdates(agent, new NullProgressMonitor());
-		if (updateStatus.getCode() == UpdateOperation.STATUS_NOTHING_TO_UPDATE) {
-			return;
+		final IProvisioningAgent agent = (IProvisioningAgent) bundleContext.getService(reference);
+		try {
+			IStatus updateStatus = P2Util.checkForUpdates(agent, monitor);
+			Activator.log(updateStatus);
+			if (updateStatus.getCode() == UpdateOperation.STATUS_NOTHING_TO_UPDATE) {
+				return;
+			}
+			if (updateStatus.getSeverity() != IStatus.ERROR)
+				PlatformUI.getWorkbench().restart();
+		} finally {
+			bundleContext.ungetService(reference);
 		}
-		if (updateStatus.getSeverity() != IStatus.ERROR)
-			PlatformUI.getWorkbench().restart();
-		else
-			LogHelper.log(updateStatus);
-
 	}
 
-	// XXX Check for updates to this application and return a status.
 	static IStatus checkForUpdates(IProvisioningAgent agent, IProgressMonitor monitor)
 			throws OperationCanceledException {
 		ProvisioningSession session = new ProvisioningSession(agent);
@@ -68,11 +85,14 @@ public class P2Util {
 
 		if (status.getSeverity() != IStatus.ERROR) {
 			// More complex status handling might include showing the user what
-			// updates
-			// are available if there are multiples, differentiating patches vs.
-			// updates, etc.
-			// In this example, we simply update as suggested by the operation.
-			ProvisioningJob job = operation.getProvisioningJob(null);
+			// updates are available if there are multiples, differentiating
+			// patches vs. updates, etc. In this example, we simply update as
+			// suggested by the operation.
+			ProvisioningJob job = operation.getProvisioningJob(monitor);
+			if (job == null) {
+				return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						"ProvisioningJob could not be created - does this application support p2 software installation?");
+			}
 			status = job.runModal(sub.newChild(100));
 			if (status.getSeverity() == IStatus.CANCEL)
 				throw new OperationCanceledException();

@@ -5,21 +5,21 @@
          point="org.eclipse.ui.commands">
       <command
             name="Update"
-            id="org.eclipse.equinox.p2.examples.rcp.cloud.command.update">
+            id="com.example.p2.simpleupdate.update">
       </command>
       <command
             name="Install"
-            id="org.eclipse.equinox.p2.examples.rcp.cloud.command.install">
+            id="com.example.p2.simpleupdate.install">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            commandId="org.eclipse.equinox.p2.examples.rcp.cloud.command.update"
+            commandId="com.example.p2.simpleupdate.update"
             class="com.example.p2.simpleupdate.utils.handler.UpdateHandler">
       </handler>
       <handler
-            commandId="org.eclipse.equinox.p2.examples.rcp.cloud.command.install"
+            commandId="com.example.p2.simpleupdate.install"
             class="com.example.p2.simpleupdate.utils.handler.InstallNewSoftwareHandler">
       </handler>
    </extension>
