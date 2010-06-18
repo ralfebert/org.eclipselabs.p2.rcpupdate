@@ -13,6 +13,7 @@ import org.eclipse.equinox.p2.operations.ProvisioningSession;
 import org.eclipse.equinox.p2.operations.UpdateOperation;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -32,7 +33,7 @@ public class P2Util {
 
 				@Override
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-					doCheckForUpdates(monitor);
+					doCheckForUpdates(new AccumulatingProgressMonitor(monitor, Display.getDefault()));
 				}
 
 			});
