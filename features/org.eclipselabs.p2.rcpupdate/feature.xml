@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="com.example.p2.simpleupdate"
-      label="Simpleupdate"
+      id="org.eclipselabs.p2.rcpupdate"
+      label="RCP Update"
       version="1.0.0.qualifier"
       provider-name="Ralf Ebert">
 
@@ -16,13 +16,6 @@
    <license url="http://www.example.com/license">
       [Enter License Description here.]
    </license>
-
-   <plugin
-         id="com.example.p2.simpleupdate.utils"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.equinox.p2.core"
@@ -201,6 +194,13 @@
 
    <plugin
          id="org.eclipse.equinox.p2.touchpoint.natives"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipselabs.p2.rcpupdate.utils"
          download-size="0"
          install-size="0"
          version="0.0.0"

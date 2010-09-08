@@ -1,4 +1,4 @@
-package com.example.p2.simpleupdate.utils;
+package org.eclipselabs.p2.rcpupdate.utils;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -15,10 +15,10 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
+import org.eclipselabs.p2.rcpupdate.utils.plugin.Activator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-import com.example.p2.simpleupdate.utils.plugin.Activator;
 
 /**
  * @see http://wiki.eclipse.org/Equinox/p2/Adding_Self-Update_to_an_RCP_Application

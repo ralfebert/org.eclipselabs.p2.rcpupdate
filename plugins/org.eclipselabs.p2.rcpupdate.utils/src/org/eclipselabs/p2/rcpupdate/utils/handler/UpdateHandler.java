@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.example.p2.simpleupdate.utils.handler;
+package org.eclipselabs.p2.rcpupdate.utils.handler;
 
 import org.eclipse.equinox.internal.p2.ui.dialogs.UpdateSingleIUWizard;
 import org.eclipse.equinox.p2.operations.RepositoryTracker;

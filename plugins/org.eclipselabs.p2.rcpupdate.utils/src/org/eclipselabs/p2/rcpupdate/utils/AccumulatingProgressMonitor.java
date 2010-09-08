@@ -1,4 +1,4 @@
-package com.example.p2.simpleupdate.utils;
+package org.eclipselabs.p2.rcpupdate.utils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IProgressMonitorWithBlocking;

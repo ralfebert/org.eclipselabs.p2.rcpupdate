@@ -1,4 +1,4 @@
-package com.example.p2.simpleupdate.utils.plugin;
+package org.eclipselabs.p2.rcpupdate.utils.plugin;
 
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.example.p2.simpleupdate.utils"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipselabs.p2.rcpupdate.utils"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
